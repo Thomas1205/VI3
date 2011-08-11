@@ -1,0 +1,26 @@
+This is a patch for GIZA++, which adds the functionality to compute IBM-3
+Viterbi alignments in EM-training.
+
+
+To install this software, you first need to acquire and compile the
+following packages: 
+
+- GIZA++ http://code.google.com/p/giza-pp/
+- CBC (tested with Version 2.4.0) http://www.coin-or.org/projects/Cbc.xml
+
+Afterwards, copy the files contained in this patch to the directory where GIZA++ is 
+installed. The files are based on the 2009 release of GIZA++ and contain some extra 
+code for the computation of IBM-3 Viterbi alignments.
+
+Finally, you will need to adjust the Makefile so that the program is linked to the CBC binaries.
+You will need to specify the include directory of CBC and will probably have to add 
+-DHAVE_CONFIG_H to the compiler flags to correctly compile the headers of CBC.
+
+Finally, by default the Viterbi alignments are only compared against
+the hillclimbing alignments, and some statistics are printed on the
+screen. If you want your training to be actually centered around these
+alignments, add -DTRAIN_VITERBI to your compiler flags.
+
+
+Tested under 64-bit Suse Linux with g++ 4.4.2 and 4.5.0.
+

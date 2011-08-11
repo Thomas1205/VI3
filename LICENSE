@@ -1,0 +1,35 @@
+This is a patch for the GIZA++ machine translation training toolkit
+that allows to compute IBM-3 Viterbi alignments and use them in the
+training process.  It was written by Thomas Schoenemann (Lund
+University, Sweden) in 2010, the modified parts are clearly marked.
+
+
+To use this software, you need the following packages:
+
+- GIZA++ http://code.google.com/p/giza-pp/
+- CBC http://www.coin-or.org/projects/Cbc.xml (tested with Version 2.4.0)
+
+
+Conditions of usages: 
+
+1. Usage is only allowed if it does not violate the LICENSE conditions
+of either GIZA++ or CBC.
+2. The software is provided "as is" by the author, with absolutely no
+actual or implied warranty of correctness, fitness, intellectual
+property ownership, or anything else whatsoever. You use the software
+entirely at your own risk. In no event shall the copyright holder be
+liable for any direct, indirect or perceived damage whatsoever
+connected with the use of this work.
+3. If you use this software, you are requested to cite the paper
+"T. Schoenemann, Computing Optimal Alignments for the IBM-3 translation model,
+CoNLL 2010, Uppsala, Sweden".
+You may also consider citing the independently developed work
+"S. Ravi and K. Knight, Does GIZA++ Make Search Errors?, 
+Computational Linguistics (to appear, 2010)"
+
+4. Permission to use or distribute this software for commercial or
+military purposes is NOT granted unless directly implied by the GIZA++
+and CBC licenses.
+
+
+

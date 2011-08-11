@@ -1,0 +1,28 @@
+
+******* version 0.96 ******
+- refined existing fertility variable exclusion
+- implemented fertility variable exclusion based on forward-backward
+- integrated a CountCutGenerator
+- reduced the maximal cut size for Gomory Cuts
+- now respecting the limit on the maximal fertility
+- refined the specification of SOS
+
+******* version 0.921 ******
+- there is now also a limit on the size of Gomory cuts
+  derived at the root node (which was intended from the start).
+  This immensely reduces the peak memory for the hansards task.
+- The limit at nodes other than the root node was also reduced
+
+
+******* version 0.92 *******
+- mentioned an independently developed similar method in the 
+   LICENSE file
+- the base solver is now directly modeled as an Osi interface 
+  (this gives some run-time gains)
+- removed a dynamic allocation in the integer heuristic
+- special ordered sets can now be exploited by adding -DENABLE_SOS 
+  to the compilation command. However, this seems to slow down the
+  solver.
+
+******* version 0.9 ********
+base version
