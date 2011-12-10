@@ -1,23 +1,23 @@
 /*
 
-Copyright (C) 2000,2001  Franz Josef Och (RWTH Aachen - Lehrstuhl fuer Informatik VI)
+  Copyright (C) 2000,2001  Franz Josef Och (RWTH Aachen - Lehrstuhl fuer Informatik VI)
 
-This file is part of GIZA++ ( extension of GIZA ).
+  This file is part of GIZA++ ( extension of GIZA ).
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful, 
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, 
-USA.
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, 
+  USA.
 
 */
 #include "transpair_model4.h"
@@ -129,22 +129,22 @@ LogProb transpair_model4::prob_of_target_and_alignment_given_source(const alignm
   if( distortionType&2 )
     {
       for(WordIndex j=1;j<=m;j++)
-	if( al(j) )
-	  if( al.get_head(al(j))==j)
-	    {
-	      int ep=al.prev_cept(al(j));
-	      float x2=probFirst[ep](j,al.get_center(ep));
-	      massert(x2<=1.0);
-	      total*=x2;
-	      if( verb) cerr << "IBM-4: d=1 of " << j << ": " << x2  << " -> " << total << endl;
-	    }
-	  else
-	    {
-	      float x2=probSecond(j,al.prev_in_cept(j));
-	      massert(x2<=1.0);
-	      total*=x2;
-	      if( verb) cerr << "IBM-4: d>1 of " << j << ": " << x2  << " -> " << total << endl;
-	    }
+        if( al(j) )
+          if( al.get_head(al(j))==j)
+            {
+              int ep=al.prev_cept(al(j));
+              float x2=probFirst[ep](j,al.get_center(ep));
+              massert(x2<=1.0);
+              total*=x2;
+              if( verb) cerr << "IBM-4: d=1 of " << j << ": " << x2  << " -> " << total << endl;
+            }
+          else
+            {
+              float x2=probSecond(j,al.prev_in_cept(j));
+              massert(x2<=1.0);
+              total*=x2;
+              if( verb) cerr << "IBM-4: d>1 of " << j << ": " << x2  << " -> " << total << endl;
+            }
     }
   return total?total:almostZero;
 }
@@ -162,16 +162,16 @@ void transpair_model4::computeScores(const alignment&al,vector<double>&d)const
   for(WordIndex j=1;j<=m;j++)
     if( al(j) )
       if( al.get_head(al(j))==j)
-	{
-	  int ep=al.prev_cept(al(j));
-	  float x2=probFirst[ep](j,al.get_center(ep));
-	  total4*=x2;
-	}
+        {
+          int ep=al.prev_cept(al(j));
+          float x2=probFirst[ep](j,al.get_center(ep));
+          total4*=x2;
+        }
       else
-	{
-	  float x2=probSecond(j,al.prev_in_cept(j));
-	  total4*=x2;
-	}
+        {
+          float x2=probSecond(j,al.prev_in_cept(j));
+          total4*=x2;
+        }
   d.push_back(total1);//9
   d.push_back(total2);//10
   d.push_back(total3);//11

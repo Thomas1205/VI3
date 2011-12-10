@@ -1,30 +1,30 @@
 /*
 
-EGYPT Toolkit for Statistical Machine Translation
-Written by Yaser Al-Onaizan, Jan Curin, Michael Jahr, Kevin Knight, John Lafferty, Dan Melamed, David Purdy, Franz Och, Noah Smith, and David Yarowsky.
+  EGYPT Toolkit for Statistical Machine Translation
+  Written by Yaser Al-Onaizan, Jan Curin, Michael Jahr, Kevin Knight, John Lafferty, Dan Melamed, David Purdy, Franz Och, Noah Smith, and David Yarowsky.
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful, 
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, 
-USA.
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, 
+  USA.
 
 */
 /*--
-transpair_model3: representation of a translation pair for model3 training
-allowing for fast access (esp. to t table).
+  transpair_model3: representation of a translation pair for model3 training
+  allowing for fast access (esp. to t table).
 
-Franz Josef Och (30/07/99)
---*/
+  Franz Josef Och (30/07/99)
+  --*/
 #include "transpair_model3.h"
 #include <algorithm>
 
@@ -49,13 +49,13 @@ transpair_model3::transpair_model3(const Vector<WordIndex>&es, const Vector<Word
   for(WordIndex i=0;i<=l;i++)
     {
       for(WordIndex j=1;j<=m;j++)
-	d(i, j)=dTable.getValue(j, i, l, m);
+        d(i, j)=dTable.getValue(j, i, l, m);
       if( i>0 )
-	{
-	  for(WordIndex f=0;f<MAX_FERTILITY;f++)
-	    n(i, f)=nTable.getValue(es[i], f);
-	  n(i,MAX_FERTILITY)=PROB_SMOOTH;
-	}
+        {
+          for(WordIndex f=0;f<MAX_FERTILITY;f++)
+            n(i, f)=nTable.getValue(es[i], f);
+          n(i,MAX_FERTILITY)=PROB_SMOOTH;
+        }
     }
 }
 
@@ -98,12 +98,12 @@ LogProb transpair_model3::scoreOfSwap(const alignment&a, WordIndex j1, WordIndex
     {
       score=(t(i2, j1)/t(i1, j1))*(t(i1, j2)/t(i2, j2));
       if( forModel3 )
-	{
-	  if (i1)
-	    score *= d(i1, j2)/d(i1, j1);
-	  if (i2)
-	    score *= d(i2, j1)/d(i2, j2);    
-	}
+        {
+          if (i1)
+            score *= d(i1, j2)/d(i1, j1);
+          if (i2)
+            score *= d(i2, j1)/d(i2, j2);    
+        }
     }
   return score;
 }
@@ -114,10 +114,10 @@ ostream&operator<<(ostream&out, const transpair_model3&m)
     {
       out << "EF-I:"<<i<<' ';
       for(WordIndex j=1;j<=m.get_m();j++)
-	out << "("<<m.t(i,j)<<","<<m.d(i,j)<<")";
+        out << "("<<m.t(i,j)<<","<<m.d(i,j)<<")";
       for(WordIndex j=1;j<MAX_FERTILITY;j++)
-	if( i>0 )
-	  out << "(fert:"<<m.get_fertility(i,j)<<")";
+        if( i>0 )
+          out << "(fert:"<<m.get_fertility(i,j)<<")";
       out << '\n';
     }
   out << "T:" << m.t << "D:" << m.d << "A:" << m.a  << "N:" << m.n << m.p0 << m.p1 << '\n';
@@ -176,10 +176,10 @@ LogProb transpair_model3::prob_of_target_and_alignment_given_source(const alignm
       massert( get_t(al(j), j)>=PROB_SMOOTH );
       if( verb) cerr << "IBM-3: t of " << j << " " << al(j) << ": " << get_t(al(j), j)  << " -> " << total << '\n';
       if (al(j))
-	{
-	  total *= get_d(al(j), j);
-	  if( verb) cerr << "IBM-3: d of " << j << ": " << get_d(al(j), j)  << " -> " << total << '\n';
-	}
+        {
+          total *= get_d(al(j), j);
+          if( verb) cerr << "IBM-3: d of " << j << ": " << get_d(al(j), j)  << " -> " << total << '\n';
+        }
     }
   return total?total:zero;
 }
@@ -200,9 +200,9 @@ void transpair_model3::computeScores(const alignment&al,vector<double>&d)const
       total3*= get_t(al(j), j) ;
       massert( get_t(al(j), j)>=PROB_SMOOTH );
       if (al(j))
-	{
-	  total4 *= get_d(al(j), j);
-	}
+        {
+          total4 *= get_d(al(j), j);
+        }
     }
   d.push_back(total1);//5
   d.push_back(total2);//6
@@ -264,10 +264,10 @@ GIZAIBM3IPHeuristic::~GIZAIBM3IPHeuristic() {
 
 /*virtual*/ bool GIZAIBM3IPHeuristic::shouldHeurRun(int /*whereFrom*/) {
 
-   const int depth = model_->currentDepth();
-   const int pass = model_->getCurrentPassNumber();
+  const int depth = model_->currentDepth();
+  const int pass = model_->getCurrentPassNumber();
 
-   return (depth <= 10 || pass == 1);
+  return (depth <= 10 || pass == 1);
 }
 
 /*virtual*/ int GIZAIBM3IPHeuristic::solution(double& objectiveValue, double* newSolution) {
@@ -294,8 +294,8 @@ GIZAIBM3IPHeuristic::~GIZAIBM3IPHeuristic() {
       double var_val = cur_solution[j*(I_+1)+i];
 
       if (var_val > max_var) {
-	max_var = var_val;
-	aj = i;
+        max_var = var_val;
+        aj = i;
       }
     }
 
@@ -340,13 +340,13 @@ class IBM3ExclusionCutGenerator : public CglCutGenerator {
 public:
 
   IBM3ExclusionCutGenerator(const CbcModel& cbc_model, const double* cost,
-			    const double* jcost_lower_bound_, const double* icost_lower_bound, const double* ibound2,
-			    const Array2<double>& approx_icost, 
-			    uint curJ, uint curI, uint nNullFertVars, uint nFertVarsPerTargetWord, double lower_bound,
-			    double loose_lower_bound, double loose_lower_bound2);
+                            const double* jcost_lower_bound_, const double* icost_lower_bound, const double* ibound2,
+                            const Array2<double>& approx_icost, 
+                            uint curJ, uint curI, uint nNullFertVars, uint nFertVarsPerTargetWord, double lower_bound,
+                            double loose_lower_bound, double loose_lower_bound2);
 
   virtual void generateCuts(const OsiSolverInterface& si, OsiCuts & cs,
-			    const CglTreeInfo = CglTreeInfo()) const;
+                            const CglTreeInfo = CglTreeInfo()) const;
   
   virtual CglCutGenerator* clone() const;
 
@@ -371,11 +371,11 @@ protected:
 
 
 IBM3ExclusionCutGenerator::IBM3ExclusionCutGenerator(const CbcModel& cbc_model, const double* cost,
-						     const double* jcost_lower_bound, 
-						     const double* icost_lower_bound, const double* ibound2,
-						     const Array2<double>& approx_icost, 
-						     uint curJ, uint curI, uint nNullFertVars, uint nFertVarsPerTargetWord, 
-						     double lower_bound, double loose_lower_bound, double loose_lower_bound2) :
+                                                     const double* jcost_lower_bound, 
+                                                     const double* icost_lower_bound, const double* ibound2,
+                                                     const Array2<double>& approx_icost, 
+                                                     uint curJ, uint curI, uint nNullFertVars, uint nFertVarsPerTargetWord, 
+                                                     double lower_bound, double loose_lower_bound, double loose_lower_bound2) :
   curJ_(curJ), curI_(curI), nNullFertVars_(nNullFertVars), nFertVarsPerTargetWord_(nFertVarsPerTargetWord), 
   lower_bound_(lower_bound), loose_lower_bound_(loose_lower_bound),
   loose_lower_bound2_(loose_lower_bound2), cbc_model_(cbc_model), cost_(cost), jcost_lower_bound_(jcost_lower_bound),
@@ -385,13 +385,13 @@ IBM3ExclusionCutGenerator::IBM3ExclusionCutGenerator(const CbcModel& cbc_model, 
 /*virtual*/ CglCutGenerator* IBM3ExclusionCutGenerator::clone() const {
 
   return new IBM3ExclusionCutGenerator(cbc_model_, cost_, jcost_lower_bound_, icost_lower_bound_, ibound2_, approx_icost_,
-				       curJ_, curI_, nNullFertVars_, nFertVarsPerTargetWord_, lower_bound_, loose_lower_bound_, 
-				       loose_lower_bound2_);
+                                       curJ_, curI_, nNullFertVars_, nFertVarsPerTargetWord_, lower_bound_, loose_lower_bound_, 
+                                       loose_lower_bound2_);
 }
 
 
 /*virtual*/ void IBM3ExclusionCutGenerator::generateCuts(const OsiSolverInterface& /*si*/, OsiCuts & cs,
-							 const CglTreeInfo info) const {
+                                                         const CglTreeInfo info) const {
 
   if (info.pass == 1) {
 
@@ -410,16 +410,16 @@ IBM3ExclusionCutGenerator::IBM3ExclusionCutGenerator(const CbcModel& cbc_model, 
     
       for (uint aj=0; aj <= curI_; aj++) {
 
-	const int idx = j*(curI_+1) + aj;
+        const int idx = j*(curI_+1) + aj;
 
-	if ( colUpper[idx] > 0.0 && cost_[idx] >= gap+jcost_lower_bound_[j]+0.1) {
+        if ( colUpper[idx] > 0.0 && cost_[idx] >= gap+jcost_lower_bound_[j]+0.1) {
 	 
-	  OsiColCut new_cut;
-	  new_cut.setLbs(1,&idx,&var_limit);
-	  new_cut.setUbs(1,&idx,&var_limit);
+          OsiColCut new_cut;
+          new_cut.setLbs(1,&idx,&var_limit);
+          new_cut.setUbs(1,&idx,&var_limit);
 
-	  cs.insert(new_cut);
-	}
+          cs.insert(new_cut);
+        }
       }
     }
 
@@ -429,23 +429,23 @@ IBM3ExclusionCutGenerator::IBM3ExclusionCutGenerator(const CbcModel& cbc_model, 
       
       for (uint f=0; f < cur_limit; f++) {
 
-	int idx = fert_var_offs + f;
-	if (i > 0)
-	  idx += nNullFertVars_ + (i-1) * nFertVarsPerTargetWord_;
+        int idx = fert_var_offs + f;
+        if (i > 0)
+          idx += nNullFertVars_ + (i-1) * nFertVarsPerTargetWord_;
 
-	if (colUpper[idx] > 0.0) {
+        if (colUpper[idx] > 0.0) {
 	
-	  if ( (cost_[idx] >= icost_lower_bound_[i] + loose_gap + 0.1)
-	       || ((approx_icost_(i,f) >= loose_gap2 + 0.1 + ibound2_[i])) ) {
-	       //|| ((cost_[idx] >= loose_gap2 + 0.1 + ibound2_[i])) ) {
+          if ( (cost_[idx] >= icost_lower_bound_[i] + loose_gap + 0.1)
+               || ((approx_icost_(i,f) >= loose_gap2 + 0.1 + ibound2_[i])) ) {
+            //|| ((cost_[idx] >= loose_gap2 + 0.1 + ibound2_[i])) ) {
 
-	    OsiColCut new_cut;
-	    new_cut.setLbs(1,&idx,&var_limit);
-	    new_cut.setUbs(1,&idx,&var_limit);
+            OsiColCut new_cut;
+            new_cut.setLbs(1,&idx,&var_limit);
+            new_cut.setUbs(1,&idx,&var_limit);
 	    
-	    cs.insert(new_cut);
-	  }
-	}
+            cs.insert(new_cut);
+          }
+        }
       }
     }
   }
@@ -458,7 +458,7 @@ public:
   IBM3CountCutGenerator( uint curJ, uint curI, uint nNullFertVars, uint nFertVarsPerTargetWord);
 
   virtual void generateCuts(const OsiSolverInterface& si, OsiCuts & cs,
-			    const CglTreeInfo = CglTreeInfo()) const;
+                            const CglTreeInfo = CglTreeInfo()) const;
   
   virtual CglCutGenerator* clone() const;
 
@@ -480,7 +480,7 @@ IBM3CountCutGenerator::IBM3CountCutGenerator(uint curJ, uint curI, uint nNullFer
 }
 
 /*virtual*/ void IBM3CountCutGenerator::generateCuts(const OsiSolverInterface& si, OsiCuts & cs,
-						     const CglTreeInfo) const {
+                                                     const CglTreeInfo) const {
 
   const double* cur_lp_solution = si.getColSolution();
 
@@ -512,83 +512,83 @@ IBM3CountCutGenerator::IBM3CountCutGenerator(uint curJ, uint curI, uint nNullFer
 
       uint idx = fert_var_offs + n;
       if (i > 0)
-	idx += nNullFertVars_ + (i-1) * nFertVarsPerTargetWord_;
+        idx += nNullFertVars_ + (i-1) * nFertVarsPerTargetWord_;
       
       double var_val = cur_lp_solution[idx];
 	      
       //NOTE: if var_val == 0, the cut inequality must be fullfilled
       if (var_val > 0.01 && var_val < 0.99) {
 
-	if (!values_initialized) {
+        if (!values_initialized) {
 
-	  for (uint j=0; j < curJ_; j++) {
+          for (uint j=0; j < curJ_; j++) {
 
-	    align_var_values[j] = cur_lp_solution[j*(curI_+1)+i];
-	    align_var_indices[j] = j*(curI_+1)+i;
+            align_var_values[j] = cur_lp_solution[j*(curI_+1)+i];
+            align_var_indices[j] = j*(curI_+1)+i;
 
-	    if (align_var_indices[j] >= nVars) {
-	      std::cerr << " error in line " << __LINE__ << std::endl;
-	    }
-	  }
+            if (align_var_indices[j] >= nVars) {
+              std::cerr << " error in line " << __LINE__ << std::endl;
+            }
+          }
 
-	  //bubble sort (highest values go in front)
-	  for (uint k1 = 0; k1 < curJ_-1; k1++) {
-	    for (uint k2 = 0; k2 < curJ_-1-k1; k2++) {
+          //bubble sort (highest values go in front)
+          for (uint k1 = 0; k1 < curJ_-1; k1++) {
+            for (uint k2 = 0; k2 < curJ_-1-k1; k2++) {
 	      
-	      if (align_var_values[k2] < align_var_values[k2+1]) {
+              if (align_var_values[k2] < align_var_values[k2+1]) {
 		
-		std::swap(align_var_values[k2],align_var_values[k2+1]);
-		std::swap(align_var_indices[k2],align_var_indices[k2+1]);
-	      }
-	    }
-	  }
+                std::swap(align_var_values[k2],align_var_values[k2+1]);
+                std::swap(align_var_indices[k2],align_var_indices[k2+1]);
+              }
+            }
+          }
 
-	  values_initialized = true;
-	}
+          values_initialized = true;
+        }
 
-	double fwd_sum = var_val;
-	for (int nn = 0; nn < n; nn++) {
+        double fwd_sum = var_val;
+        for (int nn = 0; nn < n; nn++) {
 
-	  //fwd_sum += cur_lp_solution[ fert_var_offs + i*nFertVarsPerWord_ + nn];
-	  fwd_sum += cur_lp_solution[ idx - n + nn];
-	}
+          //fwd_sum += cur_lp_solution[ fert_var_offs + i*nFertVarsPerWord_ + nn];
+          fwd_sum += cur_lp_solution[ idx - n + nn];
+        }
 
-	for (uint j=0; j <= (uint) n; j++) {
-	  fwd_sum += align_var_values[j];
-	}
+        for (uint j=0; j <= (uint) n; j++) {
+          fwd_sum += align_var_values[j];
+        }
 
-	if (fwd_sum > n + 1.01) {
+        if (fwd_sum > n + 1.01) {
 
-	  //std::cerr << "adding cut" << std::endl;
+          //std::cerr << "adding cut" << std::endl;
 
-	  for (int k=0; k < 2*n+2; k++)
-	    coeff[k] = 1.0;
+          for (int k=0; k < 2*n+2; k++)
+            coeff[k] = 1.0;
 
-	  for (int k=0; k <= n; k++)
-	    col_idx[k] = idx - n + k; //fert_var_offs + i*nFertVarsPerWord_ + k;
+          for (int k=0; k <= n; k++)
+            col_idx[k] = idx - n + k; //fert_var_offs + i*nFertVarsPerWord_ + k;
 	  
-	  for (int k=0; k <= n; k++) {
+          for (int k=0; k <= n; k++) {
 
-	    //DEBUG
-	    if ( align_var_indices[k] >= nVars) {
-	      std::cerr << " error in line " << __LINE__ << std::endl;
+            //DEBUG
+            if ( align_var_indices[k] >= nVars) {
+              std::cerr << " error in line " << __LINE__ << std::endl;
 
-	      std::cerr << "offending index: " << align_var_indices[k] << std::endl;
-	      std::cerr << "k = " << k << std::endl;
-	      std::cerr << "J = " << curJ_ << std::endl;	      
-	    }
-	    //END_DEBUG
+              std::cerr << "offending index: " << align_var_indices[k] << std::endl;
+              std::cerr << "k = " << k << std::endl;
+              std::cerr << "J = " << curJ_ << std::endl;	      
+            }
+            //END_DEBUG
 
-	    col_idx[n+1 + k] = align_var_indices[k];
-	  }
+            col_idx[n+1 + k] = align_var_indices[k];
+          }
 
-	  OsiRowCut newCut;
-	  newCut.setRow(2*n+2,col_idx,coeff,false);
-	  newCut.setLb(0.0);
-	  newCut.setUb(n+1);   
+          OsiRowCut newCut;
+          newCut.setRow(2*n+2,col_idx,coeff,false);
+          newCut.setLb(0.0);
+          newCut.setUb(n+1);   
 	  
-	  cs.insert(newCut);  
-	}
+          cs.insert(newCut);  
+        }
       }
       
 #if 1
@@ -600,60 +600,60 @@ IBM3CountCutGenerator::IBM3CountCutGenerator(uint curJ, uint curI, uint nNullFer
       
       if (bwd_var_val > 0.01 && bwd_var_val < 0.99) {
 
-	if (!values_initialized) {
+        if (!values_initialized) {
 
-	  for (uint j=0; j < curJ_; j++) {
+          for (uint j=0; j < curJ_; j++) {
 
-	    align_var_values[j] = cur_lp_solution[j*(curI_+1)+i];
-	    align_var_indices[j] = j*(curI_+1)+i;
-	  }
+            align_var_values[j] = cur_lp_solution[j*(curI_+1)+i];
+            align_var_indices[j] = j*(curI_+1)+i;
+          }
 
-	  //bubble sort (highest values go in front)
-	  for (uint k1 = 0; k1 < curJ_-1; k1++) {
-	    for (uint k2 = 0; k2 < curJ_-1-k1; k2++) {
+          //bubble sort (highest values go in front)
+          for (uint k1 = 0; k1 < curJ_-1; k1++) {
+            for (uint k2 = 0; k2 < curJ_-1-k1; k2++) {
 	      
-	      if (align_var_values[k2] < align_var_values[k2+1]) {
+              if (align_var_values[k2] < align_var_values[k2+1]) {
 		
-		std::swap(align_var_values[k2],align_var_values[k2+1]);
-		std::swap(align_var_indices[k2],align_var_indices[k2+1]);
-	      }
-	    }
-	  }
+                std::swap(align_var_values[k2],align_var_values[k2+1]);
+                std::swap(align_var_indices[k2],align_var_indices[k2+1]);
+              }
+            }
+          }
 
-	  values_initialized = true;
-	}
+          values_initialized = true;
+        }
 
-	double bwd_sum = var_val;
-	for (int nn = 0; nn < n; nn++)
-	  //bwd_sum += cur_lp_solution[ fert_var_offs + (i+1)*nFertVarsPerWord_ - nn - 1];
-	  bwd_sum += cur_lp_solution[fert_var_offs + nNullFertVars_ + i*nFertVarsPerTargetWord_ - nn - 1];
+        double bwd_sum = var_val;
+        for (int nn = 0; nn < n; nn++)
+          //bwd_sum += cur_lp_solution[ fert_var_offs + (i+1)*nFertVarsPerWord_ - nn - 1];
+          bwd_sum += cur_lp_solution[fert_var_offs + nNullFertVars_ + i*nFertVarsPerTargetWord_ - nn - 1];
 
-	for (uint j=0; j <= (uint) n; j++)
-	  bwd_sum += align_var_values[j];
+        for (uint j=0; j <= (uint) n; j++)
+          bwd_sum += align_var_values[j];
 
-	if (bwd_sum > n + 1.01) {
+        if (bwd_sum > n + 1.01) {
 
-	  //std::cerr << "adding reverse cut" << std::endl;
+          //std::cerr << "adding reverse cut" << std::endl;
 	  
-	  for (int k=0; k <= n; k++)
-	    coeff[k] = 1.0;
-	  for (int k=0; k <= n; k++)
-	    coeff[n+1 + k] = -1.0;
+          for (int k=0; k <= n; k++)
+            coeff[k] = 1.0;
+          for (int k=0; k <= n; k++)
+            coeff[n+1 + k] = -1.0;
 
-	  for (int k=0; k <= n; k++)
-	    //col_idx[k] = fert_var_offs + (i+1)*nFertVarsPerWord_ - k - 1;
-	    col_idx[k] = fert_var_offs + nNullFertVars_ + i*nFertVarsPerTargetWord_ - k - 1;
+          for (int k=0; k <= n; k++)
+            //col_idx[k] = fert_var_offs + (i+1)*nFertVarsPerWord_ - k - 1;
+            col_idx[k] = fert_var_offs + nNullFertVars_ + i*nFertVarsPerTargetWord_ - k - 1;
 	  
-	  for (int k=0; k <= n; k++)
-	    col_idx[n+1 + k] = align_var_indices[k];
+          for (int k=0; k <= n; k++)
+            col_idx[n+1 + k] = align_var_indices[k];
 
-	  OsiRowCut newCut;
-	  newCut.setRow(2*n+2,col_idx,coeff,false);
-	  newCut.setLb(-1e20);
-	  newCut.setUb(0.0);   
+          OsiRowCut newCut;
+          newCut.setRow(2*n+2,col_idx,coeff,false);
+          newCut.setLb(-1e20);
+          newCut.setUb(0.0);   
 	  
-	  cs.insert(newCut);  
-	}
+          cs.insert(newCut);  
+        }
 	
       }
 #endif
@@ -667,7 +667,7 @@ IBM3CountCutGenerator::IBM3CountCutGenerator(uint curJ, uint curI, uint nNullFer
 }
 
 void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log_bound,
-						 const alignment& upper_bound_alignment) {
+                                                 const alignment& upper_bound_alignment) {
 
 
   //std::cerr << "deriving Viterbi alignment" << std::endl;
@@ -683,9 +683,9 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
   for (uint i=0; i <= curI; i++)
     wmax_fert[i] = curJ;
 
-//   uint max_fertility = std::max<uint>(15,curJ/2);
-//   if (2*l < m)
-//     max_fertility = std::max<uint>(max_fertility,25);
+  //   uint max_fertility = std::max<uint>(15,curJ/2);
+  //   if (2*l < m)
+  //     max_fertility = std::max<uint>(max_fertility,25);
 
   //uint max_fertility = std::max<uint>(MAX_FERTILITY, curJ/2);
 
@@ -699,7 +699,7 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 
   uint nVars = (curI+1)*curJ  //alignment variables
     + nNullFertVars + curI*nFertVarsPerTargetWord;
-    //+ (curI+1)*nFertVarsPerWord; //fertility variables
+  //+ (curI+1)*nFertVarsPerWord; //fertility variables
   
   uint fert_var_offs = (curI+1)*curJ;
   //std::cerr << "fert_var_offs: " << fert_var_offs << std::endl;
@@ -745,15 +745,15 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 
       double total = get_t(i, j+1) ;
       if (i)
-	{
-	  total *= get_d(i, j+1);
-	}
+        {
+          total *= get_d(i, j+1);
+        }
 
       cost[cur_offs + i] = -log(total);
 
       if (total < min_cost) {
-	min_cost = total;
-	arg_min = i;
+        min_cost = total;
+        arg_min = i;
       }
     }
 
@@ -771,14 +771,14 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
       long double prob = 1.0;
       prob *= pow(double(1-p1), m-2.0 * fert) * pow(double(p1), double(fert));
       for (WordIndex i = 1 ; i <= fert ; i++)
-	prob *= double(m - fert - i + 1) / (double(DeficientDistortionForEmptyWord?(max(2,int(m))/DeficientDistortionForEmptyWord):i)) ;
+        prob *= double(m - fert - i + 1) / (double(DeficientDistortionForEmptyWord?(max(2,int(m))/DeficientDistortionForEmptyWord):i)) ;
             
       cost[fert_var_offs + fert] = - logl( prob );
 
       assert(!isnan(cost[fert_var_offs+fert]));
 
       if (cost[fert_var_offs + fert] < min_empty_fert_cost) {
- 	min_empty_fert_cost = cost[fert_var_offs + fert];
+        min_empty_fert_cost = cost[fert_var_offs + fert];
       }
     }
     else {      
@@ -799,14 +799,14 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
       uint idx = fert_var_offs + nNullFertVars + i*nFertVarsPerTargetWord + fert;
       
       if (fert > MAX_FERTILITY)
-	cost[idx] = 1e10;
+        cost[idx] = 1e10;
       else
-	cost[idx] = -logl( get_fertility(i+1, fert) * (LogProb) factorial(   fert  ) );
+        cost[idx] = -logl( get_fertility(i+1, fert) * (LogProb) factorial(   fert  ) );
       
       assert(!isnan(cost[fert_var_offs + (i+1)*nFertVarsPerWord + fert]));
 
       if (cost[idx] < min_cost)
-	min_cost = cost[idx];
+        min_cost = cost[idx];
     }
     
     icost_lower_bound[i+1] = min_cost;
@@ -832,12 +832,12 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 
       for (uint f=1; f < std::min(j+1,nFertVarsPerTargetWord); f++) {
 	
-	//double hyp_cost = ifert_cost(j-f,i-1) + cost[fert_var_offs+i*nFertVarsPerWord + f]; 
-	double hyp_cost = ifert_cost(j-f,i-1) + cost[offs + f];
+        //double hyp_cost = ifert_cost(j-f,i-1) + cost[fert_var_offs+i*nFertVarsPerWord + f]; 
+        double hyp_cost = ifert_cost(j-f,i-1) + cost[offs + f];
 
-	if (hyp_cost < opt_cost) {
-	  opt_cost = hyp_cost;
-	}
+        if (hyp_cost < opt_cost) {
+          opt_cost = hyp_cost;
+        }
       }
 
       ifert_cost(j,i) = opt_cost;
@@ -862,11 +862,11 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
     
       for (uint f=1; f < std::min(j+1,nFertVarsPerTargetWord); f++) {
 
-	double hyp_cost = bwd_ifert_cost(j-f,i+1) + cost[offs + f];
+        double hyp_cost = bwd_ifert_cost(j-f,i+1) + cost[offs + f];
 
-	if (hyp_cost < opt_cost) {
-	  opt_cost = hyp_cost;
-	}
+        if (hyp_cost < opt_cost) {
+          opt_cost = hyp_cost;
+        }
       }
 
       bwd_ifert_cost(j,i) = opt_cost;
@@ -875,18 +875,18 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 
   //the backward values for the empty word will never be used -> don't even compute them
   //empty word
-//   for (uint j=0; j <= curJ; j++) {
-//     double opt_cost = bwd_ifert_cost(j,1) + cost[fert_var_offs];
+  //   for (uint j=0; j <= curJ; j++) {
+  //     double opt_cost = bwd_ifert_cost(j,1) + cost[fert_var_offs];
 
-//     for (uint f=1; f < std::min(j+1,nNullFertVars); f++) {
+  //     for (uint f=1; f < std::min(j+1,nNullFertVars); f++) {
 
-//       double hyp_cost = bwd_ifert_cost(j-f,1) + cost[fert_var_offs+ f];
-//       if (hyp_cost < opt_cost) {
-// 	opt_cost = hyp_cost;
-//       }
-//     }
-//     bwd_ifert_cost(j,0) = opt_cost;
-//   }
+  //       double hyp_cost = bwd_ifert_cost(j-f,1) + cost[fert_var_offs+ f];
+  //       if (hyp_cost < opt_cost) {
+  // 	opt_cost = hyp_cost;
+  //       }
+  //     }
+  //     bwd_ifert_cost(j,0) = opt_cost;
+  //   }
   
   double lower_bound = ifert_cost(curJ,curI);
 
@@ -936,12 +936,12 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 
       //approx_icost(i,f) = cost[fert_var_offs+i*nFertVarsPerWord+f] + values[f-1];
       if (i == 0)
-	approx_icost(i,f) = cost[fert_var_offs+f] + values[f-1];
+        approx_icost(i,f) = cost[fert_var_offs+f] + values[f-1];
       else
-	approx_icost(i,f) = cost[fert_var_offs + nNullFertVars + (i-1)*nFertVarsPerTargetWord + f] + values[f-1];
+        approx_icost(i,f) = cost[fert_var_offs + nNullFertVars + (i-1)*nFertVarsPerTargetWord + f] + values[f-1];
 
       if (approx_icost(i,f) < min_cost)
-	min_cost = approx_icost(i,f);
+        min_cost = approx_icost(i,f);
     }
     ibound2[i] = min_cost;
 
@@ -961,10 +961,10 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
       
       if (cost[j*(curI+1) + aj] >= gap+jcost_lower_bound[j]+0.1) {
 
-	var_ub[j*(curI+1) + aj] = 0.0;
-	wmax_fert[aj]--;
+        var_ub[j*(curI+1) + aj] = 0.0;
+        wmax_fert[aj]--;
 
-	nHighCost++;
+        nHighCost++;
       }
     }
   }
@@ -978,45 +978,45 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 
       uint idx = fert_var_offs + f;
       if (i>0)
-	idx += nNullFertVars + (i-1) * nFertVarsPerTargetWord;
+        idx += nNullFertVars + (i-1) * nFertVarsPerTargetWord;
 
       if (f > wmax_fert[i]) {
- 	var_ub[idx] = 0.0;
- 	nFertExcluded++;
+        var_ub[idx] = 0.0;
+        nFertExcluded++;
       }
       else if (cost[idx] >= icost_lower_bound[i] + loose_gap + 0.1 ) {
- 	var_ub[idx] = 0.0;
- 	nFertExcluded++;
+        var_ub[idx] = 0.0;
+        nFertExcluded++;
       }
       //else if (cost[idx] >= loose_gap2 + 0.1 + ibound2[i]) {
       else if (approx_icost(i,f) >= loose_gap2 + 0.1 + ibound2[i]) { //CHANGED AFTER version 0.921
- 	var_ub[idx] = 0.0;
- 	nFertExcluded++;
+        var_ub[idx] = 0.0;
+        nFertExcluded++;
       }
       else {
 
-	double min_bound = 1e300;
-	//uint lower = (i == curI) ? curJ-f : 0;
-	//uint upper = (i == 0) ? 0 : curJ-f;
-	//for (uint prev_j = lower; prev_j <= upper; prev_j++) {
-	for (uint prev_j = 0; prev_j <= curJ-f; prev_j++) {
+        double min_bound = 1e300;
+        //uint lower = (i == curI) ? curJ-f : 0;
+        //uint upper = (i == 0) ? 0 : curJ-f;
+        //for (uint prev_j = lower; prev_j <= upper; prev_j++) {
+        for (uint prev_j = 0; prev_j <= curJ-f; prev_j++) {
 
 
-	  double hyp = 0.0;
-	  if (i > 0)
-	    hyp += ifert_cost(prev_j,i-1);
-	  if (i < curI)
-	    hyp += bwd_ifert_cost(curJ-prev_j-f,i+1);
+          double hyp = 0.0;
+          if (i > 0)
+            hyp += ifert_cost(prev_j,i-1);
+          if (i < curI)
+            hyp += bwd_ifert_cost(curJ-prev_j-f,i+1);
 
-	  if (hyp < min_bound)
-	    min_bound = hyp;
-	}
+          if (hyp < min_bound)
+            min_bound = hyp;
+        }
 
-	min_bound += cost[idx] + j_lower_bound;
+        min_bound += cost[idx] + j_lower_bound;
 
-	if (min_bound >= upper_log_bound + 0.1) {
-	  var_ub[idx] = 0.0;	  
-	}
+        if (min_bound >= upper_log_bound + 0.1) {
+          var_ub[idx] = 0.0;	  
+        }
       }
     }
   }
@@ -1065,10 +1065,10 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
     for (uint v= j*(curI+1); v < (j+1)*(curI+1); v++) {
       if (var_ub[v] > 0.0) {
 
-	row_idx[curMatrixEntry] = j;
-	col_idx[curMatrixEntry] = v;
-	matrix_entry[curMatrixEntry] = 1.0;
-	curMatrixEntry++;
+        row_idx[curMatrixEntry] = j;
+        col_idx[curMatrixEntry] = v;
+        matrix_entry[curMatrixEntry] = 1.0;
+        curMatrixEntry++;
       }
     }
   }
@@ -1083,14 +1083,14 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
       //uint col = fert_var_offs + i*nFertVarsPerWord + fert;
       uint col = fert_var_offs + fert;
       if (i > 0)
-	col += nNullFertVars + (i-1)*nFertVarsPerTargetWord;
+        col += nNullFertVars + (i-1)*nFertVarsPerTargetWord;
 
       if (col == nVars -1 || var_ub[col] > 0.0) { //this is the easiest way to avoid segmentation faults
 
-	row_idx[curMatrixEntry] = fert_con_offs + i;
-	col_idx[curMatrixEntry] = col;
-	matrix_entry[curMatrixEntry] = 1.0;
-	curMatrixEntry++;
+        row_idx[curMatrixEntry] = fert_con_offs + i;
+        col_idx[curMatrixEntry] = col;
+        matrix_entry[curMatrixEntry] = 1.0;
+        curMatrixEntry++;
       }
     }
   }
@@ -1107,15 +1107,15 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
       //uint col = fert_var_offs + i*nFertVarsPerWord + fert;
       uint col = fert_var_offs + fert;
       if (i > 0)
-	col += nNullFertVars + (i-1)*nFertVarsPerTargetWord;
+        col += nNullFertVars + (i-1)*nFertVarsPerTargetWord;
 
       
       if (var_ub[col] > 0.0) {
 
-	row_idx[curMatrixEntry] = row;
-	col_idx[curMatrixEntry] = col;
-	matrix_entry[curMatrixEntry] = fert;
-	curMatrixEntry++;
+        row_idx[curMatrixEntry] = row;
+        col_idx[curMatrixEntry] = col;
+        matrix_entry[curMatrixEntry] = fert;
+        curMatrixEntry++;
       }
     }
 
@@ -1125,10 +1125,10 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 
       if (var_ub[col] > 0.0) {
 	
-	row_idx[curMatrixEntry] = row;
-	col_idx[curMatrixEntry] = col;
-	matrix_entry[curMatrixEntry] = -1.0;
-	curMatrixEntry++;
+        row_idx[curMatrixEntry] = row;
+        col_idx[curMatrixEntry] = col;
+        matrix_entry[curMatrixEntry] = -1.0;
+        curMatrixEntry++;
       }
     }
   }
@@ -1189,10 +1189,10 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
       double var_val = lp_solution[v];
       
       if (var_val > 0.01 && var_val < 0.99) {
-	nNonIntegral++;
+        nNonIntegral++;
 	
-	if (v >= fert_var_offs)
-	  nNonIntegralFert++;
+        if (v >= fert_var_offs)
+          nNonIntegralFert++;
       }
 
       energy += cost[v] * var_val;
@@ -1201,8 +1201,8 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 
   //std::cerr << "initial lower bound: " << lower_bound << ", lp-relaxation energy: " << energy << std::endl;
 
-//   std::cerr << nNonIntegral << " non-integral variables (" << (nNonIntegral - nNonIntegralFert)  
-// 	    << "/" << nNonIntegralFert << ")" << std::endl;
+  //   std::cerr << nNonIntegral << " non-integral variables (" << (nNonIntegral - nNonIntegralFert)  
+  // 	    << "/" << nNonIntegralFert << ")" << std::endl;
 
   const double* solution = lp_solution;
 
@@ -1232,7 +1232,7 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
       
       uint idx = fert_var_offs + fert_count[i];
       if (i>0)
-	idx += nNullFertVars + (i-1) * nFertVarsPerTargetWord;
+        idx += nNullFertVars + (i-1) * nFertVarsPerTargetWord;
       best_sol[idx] = 1.0;
       
       //best_sol[fert_var_offs + i*nFertVarsPerWord + fert_count[i] ] = 1.0;
@@ -1273,12 +1273,12 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
       uint next = 0;
 
       for (uint i=0; i <= curI; i++) {	
-	uint idx = j*(curI+1) + i;
-	if (var_ub[idx] > 0.0) {
-	  sos_idx[next] = idx;
-	  sos_weight[next] = 1.0;
-	  next++;
-	}
+        uint idx = j*(curI+1) + i;
+        if (var_ub[idx] > 0.0) {
+          sos_idx[next] = idx;
+          sos_weight[next] = 1.0;
+          next++;
+        }
       }
 
       CbcSOS* ptr = new CbcSOS(&cbc_model,next,sos_idx,sos_weight,j);
@@ -1294,15 +1294,15 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 
       for (uint f=0; f < cur_limit; f++) {
 
-	uint idx = fert_var_offs + f;
-	if (i > 0)
-	  idx += nNullFertVars + (i-1) * nFertVarsPerTargetWord;
+        uint idx = fert_var_offs + f;
+        if (i > 0)
+          idx += nNullFertVars + (i-1) * nFertVarsPerTargetWord;
 
-	if (var_ub[idx] > 0.0) {
-	  sos_idx[next] = idx;
-	  sos_weight[next] = 1.0;
-	  next++;
-	}
+        if (var_ub[idx] > 0.0) {
+          sos_idx[next] = idx;
+          sos_weight[next] = 1.0;
+          next++;
+        }
       }
 
       CbcSOS* ptr = new CbcSOS(&cbc_model,next,sos_idx,sos_weight,curJ+i);
@@ -1318,8 +1318,8 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
 #endif
 
     IBM3ExclusionCutGenerator excl_cg(cbc_model, cost, jcost_lower_bound, icost_lower_bound, ibound2,
- 				      approx_icost, curJ, curI, nNullFertVars, nFertVarsPerTargetWord, lower_bound,
- 				      loose_lower_bound, loose_bound2);
+                                      approx_icost, curJ, curI, nNullFertVars, nFertVarsPerTargetWord, lower_bound,
+                                      loose_lower_bound, loose_bound2);
     cbc_model.addCutGenerator(&excl_cg,0,"Exclusion Cut");
 
     IBM3CountCutGenerator count_cg(curJ, curI, nNullFertVars, nFertVarsPerTargetWord);
@@ -1356,9 +1356,9 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
     for (uint v=0; v < (uint) ilpSolver.getNumCols(); v++) {
       
       if (var_ub[v] > 0.0) {
-	double var_val = cbc_solution[v];
+        double var_val = cbc_solution[v];
 	
-	energy += cost[v] * var_val;
+        energy += cost[v] * var_val;
       }
     }
 
@@ -1379,12 +1379,12 @@ void transpair_model3::compute_viterbi_alignment(alignment& al, double upper_log
       double val = solution[j*(curI+1)+i];
       
       if (val > 0.01 && val < 0.99)
-	nNonIntegralVars++;
+        nNonIntegralVars++;
 
       if (val > max_val) {
 
-	max_val = val;
-	arg_max = i;
+        max_val = val;
+        arg_max = i;
       }
     }
 
