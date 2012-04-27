@@ -24,3 +24,12 @@ alignments, add -DTRAIN_VITERBI to your compiler flags.
 
 Tested under 64-bit Suse Linux with g++ 4.4.2 and 4.5.0.
 
+NOTE: since the publication of the CoNLL 2012 paper, this package has
+evolved substantially. In particular, the prior reasoning stage was
+substantially improved.  
+
+Also, we note that in the CoNLL 2012 paper we did not respect GIZA++'s
+fertility limit. So the comparison to hillclimbing is unfair, but
+otherwise the results are correct. If you feel that correct results
+should be published, please e-mail the author. This was so far skipped
+for lack of time.
